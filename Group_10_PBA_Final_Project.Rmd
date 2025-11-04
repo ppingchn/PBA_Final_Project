@@ -3,3 +3,12 @@ title: "Group_10_PBA_Final_Project"
 output: pdf_document
 ---
 
+# Library Setup
+```{r}
+
+```
+
+# Data Importing
+```{r}
+ecom_dataset <- read.csv('ecommerce_dataset_10000.csv')
+```
