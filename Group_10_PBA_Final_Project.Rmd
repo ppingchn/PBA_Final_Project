@@ -16,7 +16,9 @@ date: "2025-11-03"
 ```
 
 # Data Importing
-```{r}
+```{r tidy=TRUE}
 ecom_dataset <- read.csv('ecommerce_dataset_10000.csv')
+
+head(ecom_dataset)
 ```
 
