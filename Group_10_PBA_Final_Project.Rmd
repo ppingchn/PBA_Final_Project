@@ -1,7 +1,14 @@
 ---
-title: "Group_10_PBA_Final_Project"
-output: pdf_document
+title: "Final Project - First Visualization"
+output:
+  pdf_document: default
+author: "Group 10"
+date: "2025-11-03"
 ---
+
+# Question statement: 
+  What is the most popular payment method among customers in the United Kingdom (UK) and the United States (USA) based on recent e-commerce transaction data?
+
 
 # Library Setup
 ```{r}
@@ -12,3 +19,4 @@ output: pdf_document
 ```{r}
 ecom_dataset <- read.csv('ecommerce_dataset_10000.csv')
 ```
+
