@@ -7,6 +7,13 @@ author: "Group 10"
 date: "2025-11-03"
 ---
 
+# Group Member
+Choonhanunt Amnuaychaikij 111006224
+Panuvit Tuicharoen 111006105
+Napat Leesaksakul 112006208
+Thanutcha Amnajcharoensak 112006412
+Nantachaporn Sudjai 112006431
+
 # Question statement: 
   What is the most popular payment method among customers in the United Kingdom (UK) and the United States (USA) based on recent e-commerce transaction data?
 
