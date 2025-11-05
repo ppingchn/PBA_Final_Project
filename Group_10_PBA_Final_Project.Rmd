@@ -1,5 +1,162 @@
 ---
-title: "Group_10_PBA_Final_Project"
-output: pdf_document
+title: "Final Project - First Visualization"
+subtitle: "Programming for Business Analytics (11410ISS 406600)"
+output:
+  pdf_document: default
+author: "Group 10"
+date: "2025-11-03"
 ---
 
+# Group Member
+Choonhanunt Amnuaychaikij 111006224
+Panuvit Tuicharoen 111006105
+Napat Leesaksakul 112006208
+Thanutcha Amnajcharoensak 112006412
+Nantachaporn Sudjai 112006431
+
+# Question statement: 
+  What is the most popular payment method among customers in the United Kingdom (UK) and the United States (USA) based on recent e-commerce transaction data?
+
+
+# Library Setup
+```{r}
+library(tidyverse)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidytext)
+```
+
+# Data Importing
+```{r tidy=TRUE}
+ecommerce <- read.csv('ecommerce_dataset_10000.csv')
+
+head(ecommerce)
+```
+
+# Data Cleaning
+```{r}
+ecommerce <- ecommerce %>%
+  mutate(
+    order_year = year(ymd(order_date))
+  )
+summary(ecommerce$order_year)
+```
+
+```{r tidy=TRUE}
+ecommerce_clean <- ecommerce %>%
+  filter(
+    !is.na(payment_method),
+    country %in% c("UK", "USA"),
+    order_year %in% c(2022, 2024)
+  )
+
+head(ecommerce_clean)
+```
+
+# Calculate Most Popular Payment Method by Country
+## UK Most Popular Payment Method
+```{r tidy=TRUE}
+payment_summary_uk <- ecommerce_clean %>%
+  filter(country == "UK", order_year %in% c(2022, 2024)) %>%
+  group_by(order_year, payment_method) %>%
+  summarise(total_transactions = n(), .groups = "drop")
+
+payment_summary_uk
+
+top_methods_uk <- payment_summary_uk %>%
+  group_by(payment_method) %>%
+  summarise(overall = sum(total_transactions)) %>%
+  slice_max(overall, n = 3) %>%
+  pull(payment_method)
+
+top_methods_uk
+```
+
+## USA Most Popular Payment Method
+```{r tidy=TRUE}
+payment_summary_usa <- ecommerce_clean %>%
+  filter(country == "USA", order_year %in% c(2022, 2024)) %>%
+  group_by(order_year, payment_method) %>%
+  summarise(total_transactions = n(), .groups = "drop")
+
+payment_summary_usa
+
+top_methods_usa <- payment_summary_usa %>%
+  group_by(payment_method) %>%
+  summarise(overall = sum(total_transactions)) %>%
+  slice_max(overall, n = 3) %>%
+  pull(payment_method)
+
+top_methods_usa
+```
+
+# Visualization Section
+## UK Visualization
+```{r}
+payment_summary_uk <- payment_summary_uk %>%
+  filter(payment_method %in% top_methods_uk)
+
+ggplot(payment_summary_uk, 
+       aes(x = reorder(payment_method, total_transactions, FUN = sum),
+           y = total_transactions,
+           fill = as.factor(order_year),
+           label = total_transactions)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_text(position = position_dodge(width = 0.8),
+            vjust = -0.3, size = 3.5) +
+  scale_fill_manual(
+    values = c("2022" = "steelblue", "2024" = "firebrick"),
+    name = "Year"
+  ) +
+  labs(
+    title = "Top 3 Payment Methods in the UK (2022 vs 2024)",
+    x = "Payment Method",
+    y = "Number of Transactions"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The bar chart illustrates the top three payment methods used by UK customers in 2022 and 2024. Across all methods, transaction volumes increased substantially between the two years, approximately a threefold growth, suggesting expanding e-commerce activity and customer adoption.
+
+Among the payment options, Credit Card emerged as the most frequently used method, maintaining a clear lead in both years. PayPal ranked second, followed by Cash on Delivery as the least common option.
+This trend suggests that UK consumers continue to prefer digital and card-based payments, reflecting high trust in secure, cashless transactions and widespread access to credit systems.
+
+## USA Visualization
+```{r}
+payment_summary_usa <- payment_summary_usa %>%
+  filter(payment_method %in% top_methods_usa)
+
+ggplot(payment_summary_usa, 
+       aes(x = reorder(payment_method, total_transactions, FUN = sum),
+           y = total_transactions,
+           fill = as.factor(order_year),
+           label = total_transactions)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_text(position = position_dodge(width = 0.8),
+            vjust = -0.3, size = 3.5) +
+  scale_fill_manual(
+    values = c("2022" = "steelblue", "2024" = "firebrick"),
+    name = "Year"
+  ) +
+  labs(
+    title = "Top 3 Payment Methods in the USA (2022 vs 2024)",
+    x = "Payment Method",
+    y = "Number of Transactions"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The chart displays the top three payment methods among U.S. customers in 2022 and 2024. While Credit Card was the dominant method in 2022, by 2024 Cash on Delivery had overtaken it, showing a notable shift in consumer behavior.
+
+Meanwhile, PayPal consistently remained the least used method, though it also experienced growth between the two years.
+Overall, U.S. consumers appear to balance convenience and control with card payments remaining strong but Cash on Delivery gaining traction as a trusted alternative.
