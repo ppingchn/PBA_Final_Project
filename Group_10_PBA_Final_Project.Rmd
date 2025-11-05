@@ -83,3 +83,33 @@ top_methods_usa <- payment_summary_usa %>%
 
 top_methods_usa
 ```
+
+# Visualization Section
+## UK Visualization
+```{r}
+payment_summary_uk <- payment_summary_uk %>%
+  filter(payment_method %in% top_methods_uk)
+
+ggplot(payment_summary_uk, 
+       aes(x = reorder(payment_method, total_transactions, FUN = sum),
+           y = total_transactions,
+           fill = as.factor(order_year),
+           label = total_transactions)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_text(position = position_dodge(width = 0.8),
+            vjust = -0.3, size = 3.5) +
+  scale_fill_manual(
+    values = c("2022" = "steelblue", "2024" = "firebrick"),
+    name = "Year"
+  ) +
+  labs(
+    title = "Top 3 Payment Methods in the UK (2022 vs 2024)",
+    x = "Payment Method",
+    y = "Number of Transactions"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
