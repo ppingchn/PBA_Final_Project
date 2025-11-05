@@ -35,3 +35,33 @@ ecommerce <- ecommerce %>%
   )
 summary(ecommerce$order_year)
 ```
+
+```{r tidy=TRUE}
+ecommerce_clean <- ecommerce %>%
+  filter(
+    !is.na(payment_method),
+    country %in% c("UK", "USA"),
+    order_year %in% c(2022, 2024)
+  )
+
+head(ecommerce_clean)
+```
+
+# Calculate Most Popular Payment Method by Country
+## UK Most Popular Payment Method
+```{r tidy=TRUE}
+payment_summary_uk <- ecommerce_clean %>%
+  filter(country == "UK", order_year %in% c(2022, 2024)) %>%
+  group_by(order_year, payment_method) %>%
+  summarise(total_transactions = n(), .groups = "drop")
+
+payment_summary_uk
+
+top_methods_uk <- payment_summary_uk %>%
+  group_by(payment_method) %>%
+  summarise(overall = sum(total_transactions)) %>%
+  slice_max(overall, n = 3) %>%
+  pull(payment_method)
+
+top_methods_uk
+```
