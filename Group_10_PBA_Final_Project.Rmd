@@ -115,6 +115,11 @@ ggplot(payment_summary_uk,
   )
 ```
 
+The bar chart illustrates the top three payment methods used by UK customers in 2022 and 2024. Across all methods, transaction volumes increased substantially between the two years, approximately a threefold growth, suggesting expanding e-commerce activity and customer adoption.
+
+Among the payment options, Credit Card emerged as the most frequently used method, maintaining a clear lead in both years. PayPal ranked second, followed by Cash on Delivery as the least common option.
+This trend suggests that UK consumers continue to prefer digital and card-based payments, reflecting high trust in secure, cashless transactions and widespread access to credit systems.
+
 ## USA Visualization
 ```{r}
 payment_summary_usa <- payment_summary_usa %>%
