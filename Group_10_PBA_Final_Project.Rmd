@@ -12,13 +12,26 @@ date: "2025-11-03"
 
 # Library Setup
 ```{r}
-
+library(tidyverse)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidytext)
 ```
 
 # Data Importing
 ```{r tidy=TRUE}
-ecom_dataset <- read.csv('ecommerce_dataset_10000.csv')
+ecommerce <- read.csv('ecommerce_dataset_10000.csv')
 
-head(ecom_dataset)
+head(ecommerce)
 ```
 
+# Data Cleaning
+```{r}
+ecommerce <- ecommerce %>%
+  mutate(
+    order_year = year(ymd(order_date))
+  )
+summary(ecommerce$order_year)
+```
