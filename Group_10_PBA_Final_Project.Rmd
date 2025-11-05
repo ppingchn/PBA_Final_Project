@@ -1,5 +1,6 @@
 ---
 title: "Final Project - First Visualization"
+subtitle: "Programming for Business Analytics (11410ISS 406600)"
 output:
   pdf_document: default
 author: "Group 10"
@@ -142,3 +143,8 @@ ggplot(payment_summary_usa,
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
 ```
+
+The chart displays the top three payment methods among U.S. customers in 2022 and 2024. While Credit Card was the dominant method in 2022, by 2024 Cash on Delivery had overtaken it, showing a notable shift in consumer behavior.
+
+Meanwhile, PayPal consistently remained the least used method, though it also experienced growth between the two years.
+Overall, U.S. consumers appear to balance convenience and control with card payments remaining strong but Cash on Delivery gaining traction as a trusted alternative.
