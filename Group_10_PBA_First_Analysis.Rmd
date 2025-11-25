@@ -14,6 +14,14 @@ Napat Leesaksakul 112006208
 Thanutcha Amnajcharoensak 112006412
 Nantachaporn Sudjai 112006431
 
+In this report, we will analyze some of the interested business question by using the analysis techniques.
+
+1. Does setting a higher price actually reduce the number of units people buy (Price Elasticity) by using correlation between Price vs Quantity.
+
+2. Do highly-rated products generate more money per transaction? by using the linear regression between Rating vs Revenue.
+
+3. Which product category is statistically the most consistent in quality? by using the confidence intervals.
+
 # Library Setup
 ```{r}
 library(tidyverse)
@@ -37,5 +45,13 @@ ecommerce <- ecommerce %>%
   mutate(
     order_year = year(ymd(order_date))
   )
-summary(ecommerce$order_year)
 ```
+
+# Data Preparation
+```{r}
+ecommerce <- ecommerce %>%
+  mutate(
+    total_amount = quantity * unit_price
+  )
+```
+
