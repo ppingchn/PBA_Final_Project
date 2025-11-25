@@ -1,0 +1,41 @@
+---
+title: "Final Project - First Analysis"
+subtitle: "Programming for Business Analytics (11410ISS 406600)"
+output:
+  pdf_document: default
+author: "Group 10"
+date: "2025-11-03"
+---
+
+# Group Member
+Choonhanunt Amnuaychaikij 111006224
+Panuvit Tuicharoen 111006105
+Napat Leesaksakul 112006208
+Thanutcha Amnajcharoensak 112006412
+Nantachaporn Sudjai 112006431
+
+# Library Setup
+```{r}
+library(tidyverse)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidytext)
+```
+
+# Data Importing
+```{r tidy=TRUE}
+ecommerce <- read.csv('ecommerce_dataset_10000.csv')
+
+head(ecommerce)
+```
+
+# Data Cleaning
+```{r}
+ecommerce <- ecommerce %>%
+  mutate(
+    order_year = year(ymd(order_date))
+  )
+summary(ecommerce$order_year)
+```
