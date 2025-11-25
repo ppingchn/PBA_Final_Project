@@ -55,3 +55,24 @@ ecommerce <- ecommerce %>%
   )
 ```
 
+# Question 1: Correlation Analysis
+
+We want to determine if a higher unit price relates to lower quantity purchased.
+```{r}
+cor_test <- cor.test(ecommerce$unit_price, ecommerce$quantity)
+
+cor_test
+```
+
+We also make the visualization for the correlation
+```{r}
+ggplot(ecommerce, aes(x = unit_price, y = quantity)) +
+  geom_jitter(alpha = 0.3, height = 0.2, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(
+    title = "Relationship between Unit Price and Quantity",
+    subtitle = paste("Correlation Coefficient:", round(cor_test$estimate, 3)),
+    x = "Unit Price ($)",
+    y = "Quantity Ordered"
+  ) + theme_minimal()
+```
