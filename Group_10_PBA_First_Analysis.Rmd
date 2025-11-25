@@ -76,3 +76,55 @@ ggplot(ecommerce, aes(x = unit_price, y = quantity)) +
     y = "Quantity Ordered"
   ) + theme_minimal()
 ```
+
+# Question 2: Linear Regression
+
+We want to predict that if Customer Rating influences the Total Sales Amount.
+```{r}
+lm_model <- lm(total_amount ~ rating, data = ecommerce)
+
+summary(lm_model)
+```
+Next we will proceed with the visualization,
+```{r}
+ggplot(ecommerce, aes(x = rating, y = total_amount)) +
+  geom_jitter(alpha = 0.2, width = 0.2, color = "gray") +
+  geom_smooth(method = "lm", color = "darkgreen", fill = "lightgreen") +
+  labs(
+    title = "Linear Regression: Effect of Rating on Total Sales",
+    subtitle = paste("Slope:", round(coef(lm_model)[2], 2)),
+    x = "Customer Rating (1-5)",
+    y = "Total Transaction Amount ($)"
+  ) + theme_minimal()
+```
+
+# Question 3: Confidence Intervals
+As we want to find the true average rating for each product category with statistical confidence.
+
+```{r}
+category_ci <- ecommerce %>%
+  group_by(category) %>%
+  summarise(
+    avg_rating = mean(rating),
+    sd_rating = sd(rating),
+    count = n(),
+    se = sd_rating / sqrt(count),
+    # CI 95% calculation
+    ci_lower = avg_rating - (1.96 * se),
+    ci_higher = avg_rating + (1.96 * se)
+  )
+
+category_ci
+```
+
+Next, we will working on the visualization for error bars.
+```{r}
+ggplot(category_ci, aes(x = reorder(category, avg_rating), y = avg_rating)) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_higher), width = 0.2, color = "darkblue") +
+  geom_point(size = 3, color = "firebrick") + 
+  labs(
+    title = "95% Confidence Intervals for Product Ratings",
+    x = "Product Category",
+    y = "Average Rating (with 95% CI)"
+  ) + coord_flip() + theme_minimal()
+```
